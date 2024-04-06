@@ -91,7 +91,7 @@ namespace AssetTracking2
 
         public virtual void Print(int index=-1)
         {
-            string number = (index >= 0) ? index+"." : "";
+            string number = (index >= 0) ? index+" " : "";
 
             int remainingLife = GetRemainingLife();
 

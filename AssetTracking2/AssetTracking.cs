@@ -36,12 +36,13 @@ namespace AssetTracking2
                             PriceInUSD=assets.PriceInUSD, 
                             PurchaseDate=assets.PurchaseDate};
 
+            assetList.Clear(); // Make sure it's empty.
+
             // create objects and add them to the list.
             foreach (var item in query)
             {
                 //Constructor (int Id, string type, string brand, string model, string office, DateTime purchaseDate, double price)
-                assetList.Add(new LaptopComputersBLL(item.Id, item.Type, item.Brand, item.Model, item.Office, item.PurchaseDate, item.PriceInUSD));
-               
+                assetList.Add(new LaptopComputersBLL(item.Id, item.Type, item.Brand, item.Model, item.Office, item.PurchaseDate, item.PriceInUSD));     
             }
 
             // select mobile phones
@@ -111,10 +112,11 @@ namespace AssetTracking2
         public static void DisplayMenu()
         {
             Console.WriteLine("\nMenu:");
-            Console.WriteLine("(1) Show an asset list sorted by Type and Date.");
-            Console.WriteLine("(2) Show an asset list sorted by Office and Date.");
-            Console.WriteLine("(3) Add a new asset.");
-            Console.WriteLine("(4) Delete an asset.");
+            Console.WriteLine("(1) Show an asset list sorted by Type and Date");
+            Console.WriteLine("(2) Show an asset list sorted by Office and Date");
+            Console.WriteLine("(3) Add a new asset");
+            Console.WriteLine("(4) Delete an asset");
+            Console.WriteLine("(5) Update asset");
             Console.WriteLine("Enter \"Q\" to quit\n");
         }
 
@@ -132,7 +134,7 @@ namespace AssetTracking2
 
                 Console.WriteLine("Add a new asset by entering the following: ");
 
-                Console.Write("Type (Phone/Computer): ");
+                Console.Write("Type (Mobile/Computer): ");
                 type = Console.ReadLine();
 
                 Console.Write("Model: ");
@@ -188,7 +190,7 @@ namespace AssetTracking2
                         // adding to list
                         assetList.Add(new LaptopComputersBLL(computers.Id, type, brand, model, office, date, price));
                         break;
-                    case "phone":
+                    case "mobile":
                         asset1 = new Assets();
 
                         mobilePhones = new MobilePhones { Assets = asset1 }; // add foreign key.
@@ -234,6 +236,124 @@ namespace AssetTracking2
         }
 
         /// <summary>
+        /// Update and set new properties for an asset.
+        /// </summary>
+        public static void UpdateAsset()
+        {
+            try
+            {
+                // A list with numbers to select one of the list items.
+                ShowOrderedList();
+
+                Console.WriteLine("Select a number to update this item.");
+                string input = Console.ReadLine();
+
+                if (!int.TryParse(input, out int selectedIndex))
+                {
+                    throw new FormatException();
+                }
+
+                // select item to update.
+                var myItem = assetList[selectedIndex];
+
+                MyDbContext Context = new MyDbContext();
+
+                // The properties to update.
+                string model, brand, office;
+                double priceInUSD;
+
+                Console.WriteLine("Update the asset by entering the following: ");
+
+                Console.Write("Brand: ");
+                brand = Console.ReadLine();
+
+                Console.Write("Model: ");
+                model = Console.ReadLine();
+
+                Console.Write("Office (Sweden/USA/India): ");
+                office = Console.ReadLine();
+
+                Console.Write("Purchase Date (year-month-day): ");
+                input = Console.ReadLine();
+
+                if (!DateTime.TryParse(input, out DateTime date))
+                {
+                    throw new FormatException();
+                }
+
+                Console.Write("Price in USD: ");
+                input = Console.ReadLine();
+
+                if (!double.TryParse(input, out double price))
+                {
+                    throw new FormatException();
+                }
+
+                Assets asset;
+                bool error = false;
+
+                switch (myItem.Type.ToLower())
+                {
+                    case "computer":
+                        LaptopComputers computer = Context.LaptopComputers.SingleOrDefault(x => x.Id == myItem.Id); // Get entity by the primary key.         
+                        asset = Context.Assets.SingleOrDefault(x => x.Id == computer.AssetsId); // Get entity by the foreign key, which is the primary key in the other entity.
+
+                        asset.PriceInUSD = price;
+                        asset.Brand = brand;
+                        asset.Office = office;
+                        asset.PurchaseDate = date;
+
+                        computer.Model = model;
+                     
+                        Context.Assets.Update(asset);
+                        Context.LaptopComputers.Update(computer);
+                        
+                        Context.SaveChanges();
+                        break;
+                    case "mobile":
+                        MobilePhones phone = Context.MobilePhones.SingleOrDefault(x => x.Id == myItem.Id); // Get entity by the primary key.
+                        asset = Context.Assets.SingleOrDefault(x => x.Id == phone.AssetsId); // Get entity by the foreign key, which is the primary key in the other entity.
+
+                        asset.PriceInUSD = price;
+                        asset.Brand = brand;
+                        asset.Office = office;
+                        asset.PurchaseDate = date;
+
+                        phone.Model = model;
+           
+                        Context.Assets.Update(asset);
+                        Context.MobilePhones.Update(phone);
+                        assetList[selectedIndex] = myItem; // Update list.
+                        Context.SaveChanges();   
+                        break;
+                    default:
+                        error = true;
+                        break;
+                }
+
+                if (error)
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Asset could not be updated. Try again!\n");
+                }
+                else
+                {
+                    Load(); // Load updates from the database.
+                    ShowOrderedList(); // Show list with the updated item.
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("The new asset was updated successfully!\n");
+                }
+
+                Console.ResetColor();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error:" + ex.Message);
+            }
+            return;
+        }
+
+        /// <summary>
         /// Remove an asset
         /// </summary>
         public static void Remove()
@@ -253,7 +373,7 @@ namespace AssetTracking2
 
                 // select item to delete.
                 var myItem = assetList[selectedIndex];
-                Console.WriteLine(myItem.Type);
+              
                 MyDbContext Context = new MyDbContext();
 
                 Assets asset;
@@ -291,6 +411,7 @@ namespace AssetTracking2
                 }
                 else
                 {
+                    ShowOrderedList(); // Show the updated list.
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write("The asset was removed successfully!\n");
                 }
@@ -330,18 +451,16 @@ namespace AssetTracking2
             Console.WriteLine("----------------------------------------------------------------------------------------------------------");
         }
 
-
-
         /// <summary>
         /// Show a list with numbers.
         /// </summary>
         public static void ShowOrderedList()
         {
             Console.WriteLine("\n");
-            Console.WriteLine("Type".PadRight(12) + "Brand".PadRight(12) + "Model".PadRight(12) + "Office".PadRight(10) + "Purchase Date".PadRight(15) + "Price in USD".PadRight(15) + "Currency".PadRight(12) + "Local price today");
-            Console.WriteLine("----".PadRight(12) + "-----".PadRight(12) + "-----".PadRight(12) + "------".PadRight(10) + "-------------".PadRight(15) + "------------".PadRight(15) + "--------".PadRight(12) + "----------------");
+            Console.WriteLine("  Type".PadRight(14) + "Brand".PadRight(12) + "Model".PadRight(12) + "Office".PadRight(10) + "Purchase Date".PadRight(15) + "Price in USD".PadRight(15) + "Currency".PadRight(12) + "Local price today");
+            Console.WriteLine("  ----".PadRight(14) + "-----".PadRight(12) + "-----".PadRight(12) + "------".PadRight(10) + "-------------".PadRight(15) + "------------".PadRight(15) + "--------".PadRight(12) + "----------------");
 
-            for (int n = 0; n < assetList.Count(); n++)
+            for (int n = 0; n < assetList.Count; n++)
             { 
                 assetList[n].Print(n);
             }

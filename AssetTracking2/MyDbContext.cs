@@ -43,9 +43,6 @@ namespace AssetTracking2
 
             modelBuilder.Entity<Assets>().HasData(new Assets { Id = 5, Brand = "Lenovo", PurchaseDate = Convert.ToDateTime("2021-05-10"), Office = "Sweden", PriceInUSD = 599 });
             modelBuilder.Entity<LaptopComputers>().HasData(new LaptopComputers { Id = 4, Model = "IdeaPad", Type = "Computer", AssetsId = 5 });
-
-            //modelBuilder.Entity<Assets>().HasMany(x => x.MobilePhoneList);
-            //modelBuilder.Entity<Assets>().HasMany(x => x.LaptopComputerList);
         }
     }
 }

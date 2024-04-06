@@ -33,6 +33,9 @@ while (true)
         case "4":
             AssetTracking.Remove(); // delete asset
             break;
+        case "5":
+            AssetTracking.UpdateAsset(); // delete asset
+            break;
         default:
             break;
     }

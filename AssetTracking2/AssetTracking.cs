@@ -67,45 +67,7 @@ namespace AssetTracking2
             }
 
         }
-        /*
-         var id = 1;
-    var query =
-   from post in database.Posts
-   join meta in database.Post_Metas on post.ID equals meta.Post_ID
-   where post.ID == id
-   select new { Post = post, Meta = meta }; */
-
-        //var letters = from letter in fruit group letter by letter into y select new {character=y.Key };
-        //Engine MyEngine = Context.Engines.Include(x => x.Car).FirstOrDefault(x => x.Id == 1);
-
-
-
-        //Car MyCar1 = Context.Cars.FirstOrDefault(x => x.Id == 1);
-
-
-        //MyCar1.Model = "Avensis";
-        //MyCar1.Year = 2024;
-        //Context.Update(MyCar1);
-        //Context.SaveChanges();
-        /*
-        public static List<Asset> assets = [
-            new Computer("Computer", "MacBook", "SD", "Sweden", Convert.ToDateTime("2021-06-14"), 1200),
-            new Phone("Mobile", "Samsung", "SD", "USA", Convert.ToDateTime("2022-03-12"), 200),
-            new Phone("Mobile", "Motorolla", "HD", "India", Convert.ToDateTime("2020-12-22"), 300),
-            new Computer("Computer", "Asus", "HD", "India", Convert.ToDateTime("2021-04-16"), 500),
-            new Computer("Computer", "HP", "Note", "Sweden", Convert.ToDateTime("2021-03-17"), 500),
-            new Phone("Mobile", "Apple", "iPhone12", "Sweden", Convert.ToDateTime("2020-03-19"), 699),
-            new Computer("Computer", "Lenovo", "IdeaPad", "India", Convert.ToDateTime("2023-07-17"), 999),
-            new Computer("Computer", "Dell", "ThinkPad", "USA", Convert.ToDateTime("2014-06-17"), 499),
-            new Phone("Mobile", "Apple", "iPhone14", "USA", Convert.ToDateTime("2021-05-10"), 999),
-            new Computer("Computer", "Lenovo", "AZ22", "Sweden", Convert.ToDateTime("2021-08-12"), 599),
-            new Phone("Mobile", "Apple", "iPhone11", "USA", Convert.ToDateTime("2019-05-19"), 599),
-            new Phone("Mobile", "Apple", "iPhone13", "Sweden", Convert.ToDateTime("2016-07-10"), 799),
-            new Computer("Computer", "Lenovo", "SD", "India", Convert.ToDateTime("2022-05-17"), 400),
-            new Phone("Mobile", "Apple", "iPhone15", "Sweden", Convert.ToDateTime("2021-01-10"), 1999),
-            new Phone("Mobile", "Samsung", "Galaxy", "sweden", Convert.ToDateTime("23-10-10"), 2100),
-        ];*/
-
+       
         /// <summary>
         /// Display a menu of options.
         /// </summary>
@@ -121,7 +83,7 @@ namespace AssetTracking2
         }
 
         /// <summary>
-        /// Add a new asset to the list that can be either computer or phone.
+        /// Add a new asset to the list that can be either computer or mobile.
         /// </summary>
         public static void AddAsset()
         {
@@ -392,7 +354,7 @@ namespace AssetTracking2
                         assetList.Remove(myItem);
                         Context.SaveChanges();   
                         break;
-                    case "phone":
+                    case "mobile":
                         MobilePhones phone = Context.MobilePhones.SingleOrDefault(x => x.Id == myItem.Id); // Get entity by the primary key.
                         asset = Context.Assets.SingleOrDefault(x => x.Id == phone.AssetsId); // Get entity by the foreign key, which is the primary key in the other entity.
 

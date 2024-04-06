@@ -52,8 +52,8 @@ namespace AssetTracking2.Migrations
                         new
                         {
                             Id = 1,
-                            Brand = "MacBook",
-                            Office = "Sweden",
+                            Brand = "Macbook",
+                            Office = "USA",
                             PriceInUSD = 1200.0,
                             PurchaseDate = new DateTime(2021, 6, 14, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
@@ -63,7 +63,7 @@ namespace AssetTracking2.Migrations
                             Brand = "Samsung",
                             Office = "USA",
                             PriceInUSD = 200.0,
-                            PurchaseDate = new DateTime(2022, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            PurchaseDate = new DateTime(2021, 8, 17, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -76,10 +76,10 @@ namespace AssetTracking2.Migrations
                         new
                         {
                             Id = 4,
-                            Brand = "Motorolla",
+                            Brand = "Motorola",
                             Office = "India",
-                            PriceInUSD = 699.0,
-                            PurchaseDate = new DateTime(2020, 3, 19, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                            PriceInUSD = 110.0,
+                            PurchaseDate = new DateTime(2021, 9, 19, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
@@ -88,6 +88,22 @@ namespace AssetTracking2.Migrations
                             Office = "Sweden",
                             PriceInUSD = 599.0,
                             PurchaseDate = new DateTime(2021, 5, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Brand = "Asus",
+                            Office = "Sweden",
+                            PriceInUSD = 490.0,
+                            PurchaseDate = new DateTime(2023, 12, 27, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Brand = "Nokia",
+                            Office = "USA",
+                            PriceInUSD = 230.0,
+                            PurchaseDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
@@ -121,7 +137,7 @@ namespace AssetTracking2.Migrations
                         {
                             Id = 1,
                             AssetsId = 1,
-                            Model = "SD",
+                            Model = "Air",
                             Type = "Computer"
                         },
                         new
@@ -136,6 +152,13 @@ namespace AssetTracking2.Migrations
                             Id = 4,
                             AssetsId = 5,
                             Model = "IdeaPad",
+                            Type = "Computer"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AssetsId = 6,
+                            Model = "Vivobook",
                             Type = "Computer"
                         });
                 });
@@ -177,7 +200,14 @@ namespace AssetTracking2.Migrations
                         {
                             Id = 2,
                             AssetsId = 4,
-                            Model = "iPhone14",
+                            Model = "G04",
+                            Type = "Mobile"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AssetsId = 7,
+                            Model = "G22",
                             Type = "Mobile"
                         });
                 });

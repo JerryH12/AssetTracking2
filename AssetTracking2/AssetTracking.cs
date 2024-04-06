@@ -28,7 +28,7 @@ namespace AssetTracking2
                         join laptops in Context.LaptopComputers
                         on assets.Id equals laptops.AssetsId
                         select new {
-                            Id = assets.Id,
+                            Id = laptops.Id,
                             Type=laptops.Type, 
                             Model=laptops.Model, 
                             Brand=assets.Brand, 
@@ -295,7 +295,9 @@ namespace AssetTracking2
                 switch (myItem.Type.ToLower())
                 {
                     case "computer":
-                        LaptopComputers computer = Context.LaptopComputers.SingleOrDefault(x => x.Id == myItem.Id); // Get entity by the primary key.         
+                        LaptopComputers computer = Context.LaptopComputers.SingleOrDefault(x => x.Id == myItem.Id); // Get entity by the primary key.
+                        Console.WriteLine("Id=" + myItem.Id);                                                                          
+
                         asset = Context.Assets.SingleOrDefault(x => x.Id == computer.AssetsId); // Get entity by the foreign key, which is the primary key in the other entity.
 
                         asset.PriceInUSD = price;
@@ -323,7 +325,7 @@ namespace AssetTracking2
            
                         Context.Assets.Update(asset);
                         Context.MobilePhones.Update(phone);
-                        assetList[selectedIndex] = myItem; // Update list.
+                       
                         Context.SaveChanges();   
                         break;
                     default:
@@ -346,7 +348,7 @@ namespace AssetTracking2
 
                 Console.ResetColor();
             }
-            catch (Exception ex)
+            catch (SqlException ex)
             {
                 Console.WriteLine("Error:" + ex.Message);
             }

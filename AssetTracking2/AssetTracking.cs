@@ -257,8 +257,7 @@ namespace AssetTracking2
                 switch (myItem.Type.ToLower())
                 {
                     case "computer":
-                        LaptopComputers computer = Context.LaptopComputers.SingleOrDefault(x => x.Id == myItem.Id); // Get entity by the primary key.
-                        Console.WriteLine("Id=" + myItem.Id);                                                                          
+                        LaptopComputers computer = Context.LaptopComputers.SingleOrDefault(x => x.Id == myItem.Id); // Get entity by the primary key.                                                                                    
 
                         asset = Context.Assets.SingleOrDefault(x => x.Id == computer.AssetsId); // Get entity by the foreign key, which is the primary key in the other entity.
 
@@ -310,7 +309,7 @@ namespace AssetTracking2
 
                 Console.ResetColor();
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
                 Console.WriteLine("Error:" + ex.Message);
             }
